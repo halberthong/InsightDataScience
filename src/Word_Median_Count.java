@@ -11,7 +11,7 @@ public class Word_Median_Count {
 	    File f = new File("../wc_input");
 		FilenameFilter textFilter = new FilenameFilter() {
 	        public boolean accept(File dir, String name) {
-	            return name.toLowerCase().endsWith(".txt");
+	            return name.toLowerCase().endsWith(".txt");//only load text file
 	        }
 	    };
 	    File[] files = f.listFiles(textFilter);
@@ -34,11 +34,13 @@ public class Word_Median_Count {
 	}
 	public void countWord(ArrayList<String> lists){
 		for(String templine : lists){
+            //if the line is "return" then solve it immediately
 			templine = preprocess(templine);
 			if(templine.isEmpty()){
 				medianCount(0);
 				continue;
 			}
+            //clear the redundant spaces
 			templine = templine.trim();
 			String[] tempwords = templine.split("\\s+");
 			medianCount(tempwords.length);
@@ -53,6 +55,7 @@ public class Word_Median_Count {
 	}
 	public String preprocess(String line){
 		StringBuilder newline = new StringBuilder();
+        //only spaces, English characters, numbers are remained
 		for(int i = 0; i < line.length(); i++){
 			char tempchar = line.charAt(i); 
 			if((tempchar <= 'z' && tempchar >= 'a') || (tempchar == ' ' || tempchar <= '9' && tempchar >= '0')){
@@ -77,6 +80,7 @@ public class Word_Median_Count {
 		}
 	}
 	public void writeFile() throws Exception{
+        //write wc_result.txt
 		BufferedWriter out = new BufferedWriter(new FileWriter("../wc_output/wc_result.txt"));
 		for(String key : wordmap.keySet()){
 			out.write(key);
@@ -92,7 +96,7 @@ public class Word_Median_Count {
 			out.newLine();
 		}
 		out.close();
-		
+		//write med_result.txt
 		BufferedWriter out2 = new BufferedWriter(new FileWriter("../wc_output/med_result.txt"));
 		for(double temp : medians){
 			out2.write(Double.toString(temp));
